@@ -4,3 +4,6 @@ The ampersand & is a special character in HTML and XML. If you want to use it as
 
 e.g. https://maps.googleapis.com/maps/api/js?key=JS-API-KEY     &amp;       callback=myMap
 
+2. 
+TRACE, DEBUG, INFO, WARN, ERROR, FATAL, OFF
+

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class GreetingController {
+public class GreetingController extends BaseController {
 	
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -19,7 +19,7 @@ public class GreetingController {
 	@PostMapping("/purchase")
 	@ResponseBody
 	public String purchase(@ModelAttribute Item item) {
-		System.out.println("kkadaffffffffffffffffffffffffffffff - " + item.getId() + ", " + item.getContent());
+		logger.info(item.getId() + ", " + item.getContent());
 		return "result";
 	}
 
