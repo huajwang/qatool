@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="http://cdn.jsdelivr.net/webjars/org.webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+	<script src="http://cdn.jsdelivr.net/webjars/org.webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+		    var socket = new SockJS('/qatool-websocket');
+		    var stompClient = Stomp.over(socket);
+		    stompClient.connect({}, function (frame) {
+		        console.log('Connected: ' + frame);
+		        stompClient.subscribe('/topic/customerservice', function(orderInfo) {
+		            alert(JSON.parse(orderInfo.body).amount);
+		        });
+		    });
+		});
+
+	</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.nuance.qa.tool;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class GreetingController extends BaseController {
+	
+	@Autowired
+	private SimpMessageSendingOperations messaging;
 	
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -20,7 +25,15 @@ public class GreetingController extends BaseController {
 	@ResponseBody
 	public String purchase(@ModelAttribute Item item) {
 		logger.info(item.getId() + ", " + item.getContent());
+		Order order = new Order();
+		order.setAmount(55);
+		messaging.convertAndSend("/topic/customerservice", order);
 		return "result";
+	}
+	
+	@GetMapping("/order")
+	public String orders() {
+		return "order";
 	}
 
     @GetMapping("/greeting")
