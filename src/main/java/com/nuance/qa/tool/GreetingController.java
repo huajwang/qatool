@@ -2,6 +2,7 @@ package com.nuance.qa.tool;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class GreetingController extends BaseController {
 	
 	@Autowired
+	private RabbitTemplate rabbitTemplate;
+	
+	@Autowired
 	private SimpMessageSendingOperations messaging;
 	
 	@GetMapping("/index")
@@ -27,6 +31,7 @@ public class GreetingController extends BaseController {
 	
 	@PostMapping("/purchase")
 	public String purchase(@ModelAttribute Item item, RedirectAttributes model) {
+		rabbitTemplate.convertAndSend(QatoolApplication.queueName, "Some one buy a ticket");
 		logger.info(item.getId() + ", " + item.getContent());
 		Order order = new Order();
 		order.setAmount(55);
