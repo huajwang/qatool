@@ -8,16 +8,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import javax.mail.MessagingException;
+
 import java.util.ArrayList;
 
 @RestController
 public class ToolController {
 	
 	@Autowired
+	private QatoolEmailServiceImpl emailService;
+	
+	@Autowired
 	private VminfoRepository vminfoRepository;
 
     @GetMapping("/vmip")
-    public String getVmip(@RequestParam(value = "userid", defaultValue = "huajianloo") String userid) {
+    public String getVmip(@RequestParam(value = "userid", defaultValue = "huajianloo") String userid) throws MessagingException {
+    	emailService.sendSimpleEmail();
         return vminfoRepository.findOne(userid).getVmip();
     }
     
