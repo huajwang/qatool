@@ -16,11 +16,15 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 public class QatoolApplication {
 
 	final static String queueName = "spring-boot";
+	
+	@Autowired
+	private AccessTokenService accessTokenService;
 
 	@Bean
 	Queue queue() {
@@ -53,7 +57,6 @@ public class QatoolApplication {
 		return new MessageListenerAdapter(receiver, "receiveMessage");
 	}
 	
-	
 	@Bean
 	public JavaMailSender mailSender(Environment env) {  
 		
@@ -67,8 +70,7 @@ public class QatoolApplication {
 		javaMailProperties.put("mail.smtp.auth", "true");
 		javaMailProperties.put("mail.smtp.auth.mechanisms", "XOAUTH2");
 		javaMailProperties.put("mail.transport.protocol", "smtp");
-		
-		String accessToken = "ya29.GlxkBB_ZpZap7bEtGtUc3mVaZtvky-ucrwKEYL6mlokELGNCkC3Qs-vFRAfzutc3j0qz3fCLVTZcnnHvnoX4pEUToL2Nqxc3-np_8n6an0Sc0yAxsrh4Ab39YMM3gw";
+		String accessToken = accessTokenService.findAccessToken("frodob");
 		mailSender.setPassword(accessToken);
 		mailSender.setJavaMailProperties(javaMailProperties);
 		return mailSender;
